@@ -2,9 +2,12 @@
 
 require_once('core.php');
 
-if ($_REQUEST['email']) $email = validator::testInput($_REQUEST['email']);
-if ($_REQUEST['password']) $password = validator::testInput($_REQUEST['password']);
-$password = password_hash($password, PASSWORD_DEFAULT);
+$user = array();
 
-echo "email = $email<br>";
-echo "password = $password<br>";
+if ($_REQUEST['email']) $user['email'] = validator::testInput($_REQUEST['email']);
+if ($_REQUEST['password']) $user['password']= validator::testInput($_REQUEST['password']);
+
+$user = new users($user);
+$user->register();
+
+var_dump($user);
