@@ -1,19 +1,7 @@
-<?php
-
-if (isset($_REQUEST['userExists'])) {
-	if ($_REQUEST['userExists'] == 1) {
-    echo <<<EOT
-      User exists!<br>Please <a href="index.php">log in</a>, or select a different email address.<br>
-EOT;
-  }
-}
-
-?>
-
 <!DOCTYPE HTML>
 <html>
 	<head>
-	  <title>Registration</title>
+	  <title>Grocery List</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	  <meta name="description" content="The HTML5 Herald"> 
 		<meta name="author" content="SitePoint"> 
@@ -24,7 +12,8 @@ EOT;
   </head> 
 <body> 
   <script src="js/scripts.js"></script> 
-  <form action="registerUser.php" method="post">
+  <form action="authenticateUser.php" method="post">
+    <h1>Please log in</h><br></br>
     Email: <input type="text" name="email"></input>
     <br></br>
     Password: <input type="password" name="password"></input>

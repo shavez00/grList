@@ -46,6 +46,7 @@ class Users
     //private $mobile = null;
     private $keepli = null;
     private $email = null;
+    private $valid = null;
     //private $salt = "Zo4HYTZ1YyKJAASY0PT6EUg7BBYduiuPaNLuxAwUjhT51ElzHv0Ri7EM6ihgf5w";
     
     public function __construct( $data = array() ) 
@@ -76,18 +77,23 @@ class Users
             //set how pdo will handle errors
             $con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
             //this would be our query.
-            $sql = "SELECT * FROM users WHERE email = :email AND password = :password LIMIT 1";
+            $sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
             //prepare the statements
             $stmt = $con->prepare( $sql );
             //give value to named parameter :username
             $stmt->bindValue( "email", $this->email, PDO::PARAM_STR );
             //give value to named parameter :password
-            $stmt->bindValue( "password", password_hash($this->password, PASSWORD_DEFAULT), PDO::PARAM_STR );
+            //echo password_hash($this->password, PASSWORD_DEFAULT);
+            //$stmt->bindValue( "password", password_hash($this->password, PASSWORD_DEFAULT), PDO::PARAM_STR );
             $stmt->execute();
-            $valid = $stmt->fetchColumn();
-            if( $valid ) {
+            $this->valid = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($this->valid) {
+              $passVerify = password_verify($this->password, $this->valid['password']);
+              if($passVerify) {
+	              //valid is true so email exists and password is correct so success is set to true
                 $this->sessionEstablish();
                 $success = true;
+              } 
             }
             $con = null;
             return $success;
@@ -99,8 +105,8 @@ class Users
     
     public function register() 
 	  {
-        $valid = $this->userLogin();
-        if($valid) {
+        $this->userLogin();
+        if($this->valid) {
             //need to fix so that when user userLogin() checked session isn't set
             session_unset();
             //need to adjust tojust session_start();check username
