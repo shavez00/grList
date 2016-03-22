@@ -33,8 +33,8 @@
 
 define( "DB_DSN", "mysql:host=localhost;dbname=grList" ); //this constant will be use as our connectionstring/dsn
 
-define( "DB_USERNAME", "shavez00" ); //username of the database
-define( "DB_PASSWORD", "morgan08" ); //password of the database
+define( "DB_USERNAME", "grList" ); //username of the database
+define( "DB_PASSWORD", "F8Lrl5QKpQtp2Bbo" ); //password of the database
 
 class Users 
 {
@@ -70,7 +70,7 @@ class Users
     public function userLogin() 
 	  {
         //success variable will be used to return if the login was successful or not.
-        $success = false;
+        $success = FALSE;
         try {
             //create our pdo object
             $con = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
@@ -92,14 +92,15 @@ class Users
               if($passVerify) {
 	              //valid is true so email exists and password is correct so success is set to true
                 $this->sessionEstablish();
-                $success = true;
+                $success = TRUE;
               } 
             }
             $con = null;
             return $success;
         } catch (PDOException $e) {
-            echo $e->getMessage();
-            return $success;
+            echo "Error in the Users object userLogin method, line " . __LINE__. "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
         }
     }
     
@@ -137,13 +138,15 @@ class Users
             $this->sessionEstablish();
             return 1;
         } catch( PDOException $e ) {
-            return $e->getMessage();
+	          echo "Error in the Users object register method, line " . __LINE__. "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
         }
     }
 
     private function sessionEstablish() 
 	  {
-        session_start();
+        if (session_status()==1) session_start();
         // Store Session Data
         $_SESSION['login_user']= $this->email;
         if ($this->keepli) {

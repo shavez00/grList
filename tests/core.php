@@ -22,11 +22,9 @@ function autoload($class)
     $flags = PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE;
     $file = strtolower(str_replace("\\", DIRECTORY_SEPARATOR, trim($class, "\\"))).".php";  //need to set name of php file to lowercase because of stringtolower command
 	  foreach ($paths as $path) {
-		    $combined = $path.DIRECTORY_SEPARATOR.$file;
+		    $combined = "../".$path.DIRECTORY_SEPARATOR.$file;
 		    if (file_exists($combined)) {
-			      //echo '<br>'.$combined.'<br>'; //Troubleshooting code to echo out the file that's being loaded
-			      //exit;
-		      	include($combined);
+			      include($combined);
 			      return;
         }
     }
