@@ -31,11 +31,6 @@
 * - sessionEstablish() - creates a session and places a cookie
 */
 
-define( "DB_DSN", "mysql:host=localhost;dbname=grList" ); //this constant will be use as our connectionstring/dsn
-
-define( "DB_USERNAME", "grList" ); //username of the database
-define( "DB_PASSWORD", "F8Lrl5QKpQtp2Bbo" ); //password of the database
-
 class Users 
 {
     //private $username = null;
@@ -47,10 +42,21 @@ class Users
     private $keepli = null;
     private $email = null;
     private $valid = null;
+    private $con = NULL;
     //private $salt = "Zo4HYTZ1YyKJAASY0PT6EUg7BBYduiuPaNLuxAwUjhT51ElzHv0Ri7EM6ihgf5w";
     
-    public function __construct( $data = array() ) 
-    {
+    public function __construct( $data = array() ) {
+	    try {
+	      //create our pdo object
+        $this->con = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
+        //set how pdo will handle errors
+        $this->con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+      } catch (PDOException $e) {
+            echo "Error creating PDO connection, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
+        }
+
         //if( isset( $data['username'] ) ) $this->username = stripslashes( strip_tags( $data['username'] ) );
         if( isset( $data['password'] ) ) $this->password = stripslashes( strip_tags( $data['password'] ) );
         //if( isset( $data['first'] ) ) $this->first = stripslashes( strip_tags( $data['first'] ) );
@@ -61,25 +67,15 @@ class Users
 	      if( isset( $data['keepli'] ) ) $this->keepli = stripslashes( strip_tags( $data['keepli'] ) );
     }
     
-    public function storeFormValues($params) 
-	  {
-        //store the parameters
-        $this->__construct( $params );
-    }
-    
     public function userLogin() 
 	  {
         //success variable will be used to return if the login was successful or not.
         $success = FALSE;
         try {
-            //create our pdo object
-            $con = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-            //set how pdo will handle errors
-            $con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
             //this would be our query.
             $sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
             //prepare the statements
-            $stmt = $con->prepare( $sql );
+            $stmt = $this->con->prepare( $sql );
             //give value to named parameter :username
             $stmt->bindValue( "email", $this->email, PDO::PARAM_STR );
             //give value to named parameter :password
@@ -95,10 +91,9 @@ class Users
                 $success = TRUE;
               } 
             }
-            $con = null;
             return $success;
         } catch (PDOException $e) {
-            echo "Error in the Users object userLogin method, line " . __LINE__. "</br>";
+            echo "Error in the Users object userLogin method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
             echo $e->getMessage() . "</br>";
             exit;
         }
@@ -115,18 +110,9 @@ class Users
             exit;
         }
         try {
-            /**echo "<br>" . $this->username;
-            echo "<br>" . $this->first;
-            echo "<br>" . $this->last;
-            echo "<br>" . $this->birthdate;
-            echo "<br>" . $this->email;
-            echo "<br>" . $this->mobile;*/
-            $con = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-            $con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-         
             $sql = "INSERT INTO users(password, email) VALUES(:password, :email)";
             
-            $stmt = $con->prepare( $sql );
+            $stmt = $this->con->prepare( $sql );
             //$stmt->bindValue( "username", $this->username, PDO::PARAM_STR );
             $stmt->bindValue( "password", password_hash($this->password, PASSWORD_DEFAULT), PDO::PARAM_STR );
             //$stmt->bindValue( "first", $this->first, PDO::PARAM_STR );
@@ -138,7 +124,7 @@ class Users
             $this->sessionEstablish();
             return 1;
         } catch( PDOException $e ) {
-	          echo "Error in the Users object register method, line " . __LINE__. "</br>";
+	          echo "Error in the Users object register method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
             echo $e->getMessage() . "</br>";
             exit;
         }
@@ -148,7 +134,7 @@ class Users
 	  {
         if (session_status()==1) session_start();
         // Store Session Data
-        $_SESSION['login_user']= $this->email;
+        $_SESSION['login_user'] = $this->email;
         if ($this->keepli) {
             //setcookie for keeping user logged in between sessions
             setcookie('login_user', $this->email, time() + 3600);
@@ -160,11 +146,6 @@ class Users
         //success variable will be used to return if the login was successful or not.
         $success = false;
         try {
-            //create our pdo object
-            $con = new PDO( DB_DSN, DB_USERNAME, DB_PASSWORD );
-            //set how pdo will handle errors
-            $con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-            //this would be our query.
             $sql = "SELECT * FROM users WHERE username = :username";
             //prepare the statements
             $stmt = $con->prepare( $sql );
@@ -179,5 +160,10 @@ class Users
             return $success;
         }
     }
+    public function getUserId() {
+	    $userId = NULL;
+	    $this->userLogin();
+	    $userId = $this->valid['userId'];
+	    return $userId;
+    }
 }
-

@@ -11,7 +11,10 @@
 *
 *  Modified this from the original autoloader to be core.php and exist in the Framework namespace
 */
+define( "DB_DSN", "mysql:host=localhost;dbname=grList" ); //this constant will be use as our connectionstring/dsn
 
+define( "DB_USERNAME", "grList" ); //username of the database
+define( "DB_PASSWORD", "F8Lrl5QKpQtp2Bbo" ); //password of the database
 
 define ("PATH_SEPERATOR", "/");  //Need to define PATH_SEPERATOR to eliminate notice message about constant not being defined.
 set_include_path( get_include_path().__DIR__ . PATH_SEPERATOR . "class" . PATH_SEPERATOR); //Need to set include path to include current directory
