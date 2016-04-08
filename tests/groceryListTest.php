@@ -86,19 +86,19 @@ try {
 		  echo "GRLISTID IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}
 
-$itemArray = ["item"=>NULL];
+$itemArray = ["item"=>"juice", "measure"=>"size"];
 
 $result = NULL;
 $result = $grDbAccess->setItem($itemArray);
 
-  	if (!empty($result) && !empty($item)) {
+  	if (!empty($result) && !empty($itemArray)) {
 		  echo "setItem method is working and is Green</br>";
-		  echo"setItem object/s:</br><pre>";
+		  echo"setItem itemId:</br><pre>";
 		   print_r($result);
 		   echo" </pre></br>";
 	  } elseif (empty($result)) {
 		  echo "SETITEM IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
-		  echo var_dump($item) . " = item</br>";
+		  echo var_dump($itemArray) . " = item</br>";
   	} else {
 		  echo "SETITEM IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}

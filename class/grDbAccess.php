@@ -89,25 +89,39 @@ class grDbAccess implements grDbInterface {
 
   public function setItem(array $itemArray) {
 	  if ($itemArray["item"] == NULL) throw new Exception("Item name needs to be set!");
-  try {
+    try {
             //this would be our query.
-            $sql = "SELECT * FROM items WHERE item = :item";
-            if (isset($itemArray["qty"])) if ($itemArray["qty"] != NULL) $sql = $sql . " AND qty = :qty";
-            if (isset($itemArray["size"])) if ($itemArray["size"] != NULL) $sql = $sql . " AND size = :size";
+            $sql = "SELECT * FROM items WHERE item LIKE :item";
+            //if (isset($itemArray["measure"])) if ($itemArray["measure"] != NULL) $sql = $sql . " AND measure = :measure";
             //prepare the statements
-var_dump($sql);
-exit;
             $stmt = $this->con->prepare( $sql );
             //give value to named parameter :username
-            $stmt->bindValue( "grName", $grName, PDO::PARAM_STR );
+            $stmt->bindValue( "item", "%" . $itemArray["item"] . "%", PDO::PARAM_STR );
             $stmt->execute();
-            $grList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $grList;
+            $existingItem = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
           echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
           echo $e->getMessage() . "</br>";
           exit;
         }
+        if (!empty($existingItem)) {
+	        return $existingItem;
+	      } else {
+		      try {
+		        $sql = "INSERT INTO items(item, measure) VALUES(:item, :measure)";
+            
+            $stmt = $this->con->prepare( $sql );
+            $stmt->bindValue( "item", $itemArray["item"], PDO::PARAM_STR );
+            $stmt->bindValue( "measure", $itemArray["measure"], PDO::PARAM_STR );
+            $stmt->execute();
+            $result = $this->con->lastInsertId();
+            return $result;
+          } catch( PDOException $e ) {
+	          echo "Error in the setItem method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
+          }
+	      }
   }
 }
 
