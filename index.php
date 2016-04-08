@@ -6,7 +6,7 @@ try {
 	  throw new Exception ("Session Start Error");
   }
 } catch (Exception $e) {
-  echo "Error in the Users object register method, line " . __LINE__. "</br>";
+  echo "Error in creating session on line " . __LINE__. " in file " . __FILE__ . "</br>";
   echo $e->getMessage() . "</br>";
   exit;
 }
@@ -15,6 +15,6 @@ if (isset($_REQUEST['login']) && $_REQUEST['login'] == 0) echo "User login fail.
 
 if (!isset($_SESSION['login_user'])) include ("login.html");
 
-if (isset($_SESSION['login_user'])) include ('groceryList.php');
+if (isset($_SESSION['login_user'])) header("Location:grocerylist.php");
 
 ?>

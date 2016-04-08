@@ -12,7 +12,7 @@ $loginSuccess = $user->userLogin();
 
 if ($loginSuccess) header("Location:index.php");
 
-$registerNewUser = $user->register();
+if ($loginSuccess == FALSE) $registerNewUser = $user->register();
 
 if ($registerNewUser==1) header("Location:index.php");
 

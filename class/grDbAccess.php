@@ -66,6 +66,49 @@ class grDbAccess implements grDbInterface {
         exit;
       }
   }
+  
+  public function getGrListItems($grListId) {
+	  try {
+		        $sql=NULL;
+		        $stmt=NULL;
+            //this would be our query.
+            $sql = "SELECT * FROM grListANDItemsIntersection WHERE grListId = :grListId";
+            //prepare the statements
+            $stmt = $this->con->prepare( $sql );
+            //give value to named parameter :username
+            $stmt->bindValue( "grListId", $grListId, PDO::PARAM_STR );
+            $stmt->execute();
+            $grListItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $grListItems;
+        } catch (PDOException $e) {
+          echo "Error with getGrListItems method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo $e->getMessage() . "</br>";
+          exit;
+        }
+  }
+
+  public function setItem(array $itemArray) {
+	  if ($itemArray["item"] == NULL) throw new Exception("Item name needs to be set!");
+  try {
+            //this would be our query.
+            $sql = "SELECT * FROM items WHERE item = :item";
+            if (isset($itemArray["qty"])) if ($itemArray["qty"] != NULL) $sql = $sql . " AND qty = :qty";
+            if (isset($itemArray["size"])) if ($itemArray["size"] != NULL) $sql = $sql . " AND size = :size";
+            //prepare the statements
+var_dump($sql);
+exit;
+            $stmt = $this->con->prepare( $sql );
+            //give value to named parameter :username
+            $stmt->bindValue( "grName", $grName, PDO::PARAM_STR );
+            $stmt->execute();
+            $grList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $grList;
+        } catch (PDOException $e) {
+          echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo $e->getMessage() . "</br>";
+          exit;
+        }
+  }
 }
 
 ?>

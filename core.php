@@ -17,6 +17,19 @@ define( "DB_USERNAME", "grList" ); //username of the database
 define( "DB_PASSWORD", "F8Lrl5QKpQtp2Bbo" ); //password of the database
 
 define ("PATH_SEPERATOR", "/");  //Need to define PATH_SEPERATOR to eliminate notice message about constant not being defined.
+
+try {
+  if (session_status()==1) {
+	  session_start();
+  } else {
+	  throw new Exception ("Session Start Error");
+  }
+} catch (Exception $e) {
+  echo "Error in creating session on line " . __LINE__. " in file " . __FILE__ . "</br>";
+  echo $e->getMessage() . "</br>";
+  exit;
+}
+
 set_include_path( get_include_path().__DIR__ . PATH_SEPERATOR . "class" . PATH_SEPERATOR); //Need to set include path to include current directory
 
 function autoload($class) 

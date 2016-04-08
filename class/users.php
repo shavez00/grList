@@ -43,6 +43,7 @@ class Users
     private $email = null;
     private $valid = null;
     private $con = NULL;
+    private $userId = NULL;
     //private $salt = "Zo4HYTZ1YyKJAASY0PT6EUg7BBYduiuPaNLuxAwUjhT51ElzHv0Ri7EM6ihgf5w";
     
     public function __construct( $data = array() ) {
@@ -65,6 +66,7 @@ class Users
         //if( isset( $data['mobile'] ) ) $this->mobile = stripslashes( strip_tags( $data['mobile'] ) );
         if( isset( $data['email'] ) ) $this->email = stripslashes( strip_tags( $data['email'] ) );
 	      if( isset( $data['keepli'] ) ) $this->keepli = stripslashes( strip_tags( $data['keepli'] ) );
+	      if( isset( $data['userId'] ) ) $this->userId = stripslashes( strip_tags( $data['userId'] ) );
     }
     
     public function userLogin() 
@@ -104,7 +106,7 @@ class Users
         $this->userLogin();
         if($this->valid) {
             //need to fix so that when user userLogin() checked session isn't set
-            session_unset();
+            //session_unset();
             //need to adjust tojust session_start();check username
             return 2;
             exit;
@@ -134,7 +136,7 @@ class Users
 	  {
         if (session_status()==1) session_start();
         // Store Session Data
-        $_SESSION['login_user'] = $this->email;
+        $_SESSION['login_user'] = $this->valid;
         if ($this->keepli) {
             //setcookie for keeping user logged in between sessions
             setcookie('login_user', $this->email, time() + 3600);
@@ -161,9 +163,9 @@ class Users
         }
     }
     public function getUserId() {
-	    $userId = NULL;
+	    $result = NULL;
 	    $this->userLogin();
-	    $userId = $this->valid['userId'];
-	    return $userId;
+	    $result = (int)$this->valid['userId'];
+	    return $result;
     }
 }
