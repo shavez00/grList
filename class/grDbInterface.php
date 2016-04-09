@@ -5,6 +5,7 @@ interface grDbInterface {
   public function setGrListId($userId, $name);
   public function getGrListItems($grListId);
   public function setItem(array $item);
+  public function addItemToList($grListId, $itemId);
 }
 
 ?>

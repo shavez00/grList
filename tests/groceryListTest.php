@@ -104,6 +104,27 @@ $result = $grDbAccess->setItem($itemArray);
 		}
 		
 $grListItems = NULL;
+$itemId = NULL;
+$itemId = (int)$result[0]["itemId"];
+$grListId2 = (int)$grListId[0]["grListId"];
+$grListItems = $grDbAccess->addItemToList($grListId2, $itemId);
+
+  	if (!empty($grListItems) && !empty($grListId)) {
+		  echo "addItemToList method is working and is Green</br>";
+		  echo "addItemToList result:</br><pre>";
+		   print_r($grListItems);
+		   echo" </pre></br>";
+	  } elseif (empty($grListItems)) {
+		  echo "ADDITEMTOLIST IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  echo var_dump($grListId2) . " = grListId</br>";
+		  echo var_dump($itemId) . " = itemId</br>";
+  	} else {
+		  echo "ADDITEMTOLIST IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		}
+		
+echo "<br>";
+		
+$grListItems = NULL;
 $grListItems = $grDbAccess->getGrListItems($grListId[0]['grListId']);
 
   	if (!empty($grListItems) && !empty($grListId)) {
@@ -113,7 +134,9 @@ $grListItems = $grDbAccess->getGrListItems($grListId[0]['grListId']);
 		   echo" </pre></br>";
 	  } elseif (empty($grListItems)) {
 		  echo "GRLISTITEMS IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  echo "<pre>";
 		  echo var_dump($grListId[0]) . " = grListId</br>";
+		  echo "</pre>";
   	} else {
 		  echo "GRLISTITEMS IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}

@@ -123,6 +123,8 @@ class grDbAccess implements grDbInterface {
           }
 	      }
   }
+
+  public function addItemToList($grListId, $itemId) {}
 }
 
 ?>
