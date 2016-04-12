@@ -124,7 +124,39 @@ class grDbAccess implements grDbInterface {
 	      }
   }
 
-  public function addItemToList($grListId, $itemId) {}
+  public function addItemToList($grListId, $itemId) {
+	   try {
+            //this would be our query.
+            $sql = "SELECT * FROM  grListANDItemsIntersection WHERE grListId = :grListId";
+            //prepare the statements
+            $stmt = $this->con->prepare( $sql );
+            //give value to named parameter :username
+            $stmt->bindValue( "grListId", $grListId, PDO::PARAM_STR );
+            $stmt->execute();
+            $itemArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+          echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo $e->getMessage() . "</br>";
+          exit;
+        }
+		    if (!empty($itemArray)) foreach ($itemArray as $existingItemId) {
+			    if ($existingItemId["itemId"]==$itemId) return FALSE;
+		    }
+    try {
+            $sql = "INSERT INTO grListANDItemsIntersection(grListId, itemId) VALUES(:grListId, :itemId)";
+            
+            $stmt = $this->con->prepare( $sql );
+            $stmt->bindValue( "grListId", $grListId, PDO::PARAM_INT );
+            $stmt->bindValue( "itemId", $itemId, PDO::PARAM_INT );
+            $stmt->execute();
+            $result = $this->con->lastInsertId();
+            return $result;
+          } catch( PDOException $e ) {
+	          echo "Error in the setItem method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
+          }
+  }
 }
 
 ?>

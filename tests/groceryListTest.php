@@ -118,6 +118,7 @@ $grListItems = $grDbAccess->addItemToList($grListId2, $itemId);
 		  echo "ADDITEMTOLIST IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		  echo var_dump($grListId2) . " = grListId</br>";
 		  echo var_dump($itemId) . " = itemId</br>";
+		  echo var_dump($grListItems) . " = itemId</br>";
   	} else {
 		  echo "ADDITEMTOLIST IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}
