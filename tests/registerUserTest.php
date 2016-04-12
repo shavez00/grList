@@ -4,24 +4,18 @@ require_once('core.php');
 
 $user = array();
 
-if (isset($_REQUEST['email'])) $user['email'] = validator::testInput($_REQUEST['email']);
-if (isset($_REQUEST['password'])) $user['password']= validator::testInput($_REQUEST['password']);
-
 $user['email'] = "shavez00@yahoo.com";
 $user['password'] = "morgan08";
 
 $user = new users($user);
 //$user->register();
 
+echo "<b>This test is for the register method in the user class.  If the result is 1 then a new user was registered.  If the result is 2 then there is already an existing user.</b></br>";
 echo "<b>RegisterUser.php test</b></br>";
 
-if ($user instanceof users) {
-  echo "User object Green</br>";
-} else {
-  echo "User object Red</br>";
-}
-
 $result = $user->register();
+
+echo var_dump($result) . " = user register method result</br>";
 
 if ($result==1) {
 	echo "User Register Green</br>";
