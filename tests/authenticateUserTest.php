@@ -13,6 +13,8 @@ $user['password'] = "morgan08";
 $user = new users($user);
 $userLogin = $user->userLogin();
 
+echo "<b>Test to make sure a user object is created and that the userLogin method is returning a valid user object</b></br>";
+
 echo "<b>AuthenticateUser.php test</b></br>";
 
 if ($user instanceof users) {
@@ -26,9 +28,8 @@ if ($user instanceof users) {
 
 if ($userLogin) {
 	echo "User Login Green</br>";
-	echo "</br><pre>";
-  print_r($userLogin);
-  echo "</pre></br>";
+  echo var_dump($userLogin) . " = user Login result";
 	} else {
 		echo "User Login Red</br>";
+		echo var_dump($userLogin) . " = user Login result";
 	}
