@@ -2,7 +2,7 @@
 
 include_once('core.php');
 
-if (!isset($_SESSION['login_user'])) var_dump($_SESSION);
+if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
 $userId = (int)validator::testInput($_SESSION['login_user']['userId']);
 
@@ -32,6 +32,10 @@ $grListId = NULL;
 if (isset($_REQUEST['grListId'])) $grListId = (int)validator::testInput($_REQUEST['grListId']);
 
 $items = $grDbAccess->getGrListItems($grListId);
-var_dump($items);
+foreach ($items as $item) {
+  $item = $grDbAccess->getItem($item["itemId"]);
+  print_r($item);
+  echo "</br>";
+}
 
 ?>

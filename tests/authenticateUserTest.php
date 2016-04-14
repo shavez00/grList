@@ -28,8 +28,8 @@ if ($user instanceof users) {
 
 if ($userLogin) {
 	echo "User Login Green</br>";
-  echo var_dump($userLogin) . " = user Login result";
+  echo var_dump($userLogin) . " = user Login result</br>";
 	} else {
 		echo "User Login Red</br>";
-		echo var_dump($userLogin) . " = user Login result";
+		echo var_dump($userLogin) . " = user Login result</br>";
 	}

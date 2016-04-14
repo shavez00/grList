@@ -25,14 +25,12 @@ try {
 	var_dump($userId);
 	exit;
 	*/
-	
-	$grDbAccess = new grDbAccess();
-	$grListId = NULL; //Used for Exception testing of getGrListId method
-	$grListId = $grDbAccess->setGrListId($userId, "work");
+		
+	echo "</br><b>This tests the grDbAccess class and it's methods</b></br>";
 	
 	echo "</br><b>groceryList.php test</b></br>";
 	
-	echo "Registered Sessions</br>";
+	echo "Data in the currently active Sessions</br>";
 	echo "<pre>";
   print_r($_SESSION);
   echo "</pre></br>";
@@ -42,23 +40,23 @@ try {
 	
 	echo "User Id = $userId</br>";
 	
-	if ($user instanceof users) {
-		echo "User object Green</br>";
-	} else {
-		echo "USER OBJECT IS RED!!!!!!!!!!!! - line # " . __LINE__ . "</br>";
-	}
-
 	if ($userId!==Null) {
-		echo "UserId set is Green</br>";
+		echo "getUserId method is Green</br>";
 	} else {
-		echo "USERID SET IS RED!!!!!!!!!!!!!!!! - line # " . __LINE__ . "</br>";
+		echo "GETUSERID METHOD IS RED!!!!!!!!!!!!!!!! - line # " . __LINE__ . "</br>";
 	}
 	
+	$grDbAccess = new grDbAccess();
+	$grListId = NULL; //Used for Exception testing of getGrListId method
+	$grListId = $grDbAccess->setGrListId($userId, "work");
+
 	if (isset($grListId)) {
 	  echo "</br>grListId returned from setGrListId method = $grListId </br>";
+	  echo var_dump($grListId) . " = grListId returned from setGrListId method</br>";
 	}  else {
 	  echo "</br>grListId is not set by setGrListId method</br>";
-	}
+	  echo var_dump($grListId) . " = grListId returned from setGrListId method</br>";
+	} 
 	
 
 	if ($grListId!==Null && !empty($grListId)) {
@@ -140,6 +138,23 @@ $grListItems = $grDbAccess->getGrListItems($grListId[0]['grListId']);
 		  echo "</pre>";
   	} else {
 		  echo "GRLISTITEMS IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		}
+		
+$itemId = 2;
+$item = $grDbAccess->getItem($itemId);
+
+  	if (!empty($itemId) && !empty($item)) {
+		  echo "getItem method is working and is Green</br>";
+		  echo"getItem object/s:</br><pre>";
+		   print_r($item);
+		   echo" </pre></br>";
+	  } elseif (empty($item)) {
+		  echo "GETITEM METHOD IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  echo "<pre>";
+		  echo var_dump($item) . " = item</br>";
+		  echo "</pre>";
+  	} else {
+		  echo "GETITEM METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}
 } catch (Exception $e) {
 	echo $e->getMessage();

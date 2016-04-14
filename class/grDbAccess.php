@@ -157,6 +157,26 @@ class grDbAccess implements grDbInterface {
             exit;
           }
   }
+
+  public function getItem($itemId) {
+	  if ($itemId == NULL) throw new Exception("ItemId needs to be set! for getItem method");
+    try {
+            //this would be our query.
+            $sql = "SELECT * FROM items WHERE itemId = :itemId";
+            //if (isset($itemArray["measure"])) if ($itemArray["measure"] != NULL) $sql = $sql . " AND measure = :measure";
+            //prepare the statements
+            $stmt = $this->con->prepare( $sql );
+            //give value to named parameter :username
+            $stmt->bindValue( "itemId", $itemId, PDO::PARAM_INT );
+            $stmt->execute();
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+          echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo $e->getMessage() . "</br>";
+          exit;
+        }
+	  return $item;
+  }
 }
 
 ?>
