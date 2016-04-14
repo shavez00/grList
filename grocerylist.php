@@ -32,9 +32,17 @@ $grListId = NULL;
 if (isset($_REQUEST['grListId'])) $grListId = (int)validator::testInput($_REQUEST['grListId']);
 
 $items = $grDbAccess->getGrListItems($grListId);
+$count = 0;
+/*
+echo "<pre>";
+var_dump($items);
+echo "</pre>";
+exit;
+*/
 foreach ($items as $item) {
-  $item = $grDbAccess->getItem($item["itemId"]);
-  print_r($item);
+	$count = $count + 1;
+  $itemDesc = $grDbAccess->getItem($item["itemId"]);
+  echo $count . ". " . $itemDesc["item"] . " " . $item["qty"] . " " . $itemDesc["measure"];
   echo "</br>";
 }
 
