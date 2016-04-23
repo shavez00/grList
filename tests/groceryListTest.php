@@ -105,7 +105,8 @@ $grListItems = NULL;
 $itemId = NULL;
 $itemId = (int)$result[0]["itemId"];
 $grListId2 = (int)$grListId[0]["grListId"];
-$grListItems = $grDbAccess->addItemToList($grListId2, $itemId);
+$qty = 2;
+$grListItems = $grDbAccess->addItemToList($grListId2, $itemId, $qty);
 
   	if (!empty($grListItems) && !empty($grListId)) {
 		  echo "addItemToList method is working and is Green</br>";
@@ -116,7 +117,7 @@ $grListItems = $grDbAccess->addItemToList($grListId2, $itemId);
 		  echo "ADDITEMTOLIST IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		  echo var_dump($grListId2) . " = grListId</br>";
 		  echo var_dump($itemId) . " = itemId</br>";
-		  echo var_dump($grListItems) . " = itemId</br>";
+		  echo var_dump($grListItems) . " = returned InterId</br>";
   	} else {
 		  echo "ADDITEMTOLIST IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}

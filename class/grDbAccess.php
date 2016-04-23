@@ -124,7 +124,7 @@ class grDbAccess implements grDbInterface {
 	      }
   }
 
-  public function addItemToList($grListId, $itemId) {
+  public function addItemToList($grListId, $itemId, $qty=NULL) {
 	   try {
             //this would be our query.
             $sql = "SELECT * FROM  grListANDItemsIntersection WHERE grListId = :grListId";
@@ -143,11 +143,12 @@ class grDbAccess implements grDbInterface {
 			    if ($existingItemId["itemId"]==$itemId) return FALSE;
 		    }
     try {
-            $sql = "INSERT INTO grListANDItemsIntersection(grListId, itemId) VALUES(:grListId, :itemId)";
+            $sql = "INSERT INTO grListANDItemsIntersection(grListId, itemId, qty) VALUES(:grListId, :itemId, :qty)";
             
             $stmt = $this->con->prepare( $sql );
             $stmt->bindValue( "grListId", $grListId, PDO::PARAM_INT );
             $stmt->bindValue( "itemId", $itemId, PDO::PARAM_INT );
+            $stmt->bindValue( "qty", $qty, PDO::PARAM_INT );
             $stmt->execute();
             $result = $this->con->lastInsertId();
             return $result;
