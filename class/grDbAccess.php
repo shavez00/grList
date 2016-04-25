@@ -19,27 +19,14 @@ class grDbAccess implements grDbInterface {
 	  if ($userId!==NULL) try {
             //this would be our query.
             $sql = "SELECT * FROM groceryList WHERE userId = :userId";
+            if ($grName!==NULL) $sql = $sql . " AND grName = :grName";
             //prepare the statements
             $stmt = $this->con->prepare( $sql );
             //give value to named parameter :username
-            $stmt->bindValue( "userId", $userId, PDO::PARAM_STR );
+            $stmt->bindValue( "userId", $userId, PDO::PARAM_INT );
+            if ($grName!==NULL) $stmt->bindValue( "grName", $grName, PDO::PARAM_STR );
             $stmt->execute();
-            $grList = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            return $grList;
-        } catch (PDOException $e) {
-          echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
-          echo $e->getMessage() . "</br>";
-          exit;
-        }
-    if ($grName!==NULL && $userId==NULL) try {
-            //this would be our query.
-            $sql = "SELECT * FROM groceryList WHERE grName = :grName";
-            //prepare the statements
-            $stmt = $this->con->prepare( $sql );
-            //give value to named parameter :username
-            $stmt->bindValue( "grName", $grName, PDO::PARAM_STR );
-            $stmt->execute();
-            $grList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $grList = $stmt->fetch(PDO::FETCH_ASSOC);
             return $grList;
         } catch (PDOException $e) {
           echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
@@ -50,7 +37,7 @@ class grDbAccess implements grDbInterface {
   }
 
   public function setGrListId($userId, $grName = NULL) {
-	  if (empty($this->getGrListId(NULL, $grName))) try {
+	  if (empty($this->getGrListId($userId, $grName))) try {
 		  $sql = "INSERT INTO groceryList(userId, grName) VALUES(:userId, :grName)";
             
        $stmt = $this->con->prepare( $sql );
@@ -65,6 +52,7 @@ class grDbAccess implements grDbInterface {
         echo $e->getMessage() . "</br>";
         exit;
       }
+  return $this->getGrListId($userId, $grName);
   }
   
   public function getGrListItems($grListId) {
@@ -135,7 +123,7 @@ class grDbAccess implements grDbInterface {
             $stmt->execute();
             $itemArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-          echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo "Error with addItemToList method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
           echo $e->getMessage() . "</br>";
           exit;
         }
@@ -153,10 +141,50 @@ class grDbAccess implements grDbInterface {
             $result = $this->con->lastInsertId();
             return $result;
           } catch( PDOException $e ) {
-	          echo "Error in the setItem method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+	          echo "Error in the addItemToList method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
             echo $e->getMessage() . "</br>";
             exit;
           }
+  }
+
+  public function removeItemFromList($grListId, $itemId) {
+	   try {
+            //this would be our query.
+            $sql = "SELECT * FROM  grListANDItemsIntersection WHERE grListId = :grListId";
+            //prepare the statements
+            $stmt = $this->con->prepare( $sql );
+            //give value to named parameter :username
+            $stmt->bindValue( "grListId", $grListId, PDO::PARAM_STR );
+            $stmt->execute();
+            $itemArray = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+          echo "Error with removeItemFromList method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo $e->getMessage() . "</br>";
+          exit;
+        }
+
+		    if (!empty($itemArray)) {
+			    foreach ($itemArray as $item) {
+            if(in_array($itemId, $item)) $result = TRUE;
+          }
+		    }
+		if ($result) {
+      try {
+            $sql = "DELETE FROM grListANDItemsIntersection WHERE grListId = :grListId AND itemId = :itemId";
+            
+            $stmt = $this->con->prepare( $sql );
+            $stmt->bindValue( "grListId", $grListId, PDO::PARAM_INT );
+            $stmt->bindValue( "itemId", $itemId, PDO::PARAM_INT );
+            $stmt->execute();
+            $result = $this->con->lastInsertId();
+            return TRUE;
+          } catch( PDOException $e ) {
+	          echo "Error in the removeItemFromListItem method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
+          }
+      }
+      return FALSE;
   }
 
   public function getItem($itemId) {

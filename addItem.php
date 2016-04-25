@@ -12,13 +12,16 @@ $grListId = (int)$_SESSION["grListId"];
 
 if (isset($_REQUEST["item"]))$items = $grDbAccess->setItem($_REQUEST);
 
-if (is_array($items)) {
+if (isset($items) && is_array($items)) {
   foreach ($items as $item) {
 	       $name = $item['item'];
 	       $itemId = $item['itemId'];
 	       $url = "addItem.php?itemName=$name&itemId=$itemId";
 		      echo "</br><a href=$url>$name</a></br>";
         }
+} else {
+	$grDbAccess->addItemToList($grListId, $items, $_REQUEST["qty"]);
+  header("Location:grocerylist.php");
 }
 
 
