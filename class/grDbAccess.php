@@ -26,7 +26,11 @@ class grDbAccess implements grDbInterface {
             $stmt->bindValue( "userId", $userId, PDO::PARAM_INT );
             if ($grName!==NULL) $stmt->bindValue( "grName", $grName, PDO::PARAM_STR );
             $stmt->execute();
-            $grList = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($grName==Null) {
+              $grList = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } else {
+	            $grList = $stmt->fetch(PDO::FETCH_ASSOC);
+            }
             return $grList;
         } catch (PDOException $e) {
           echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";

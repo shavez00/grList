@@ -95,7 +95,7 @@ $result = $grDbAccess->setItem($itemArray);
 $grListItems = NULL;
 $itemId = NULL;
 $itemId = 193; //(int)$result[0]["itemId"];
-$grListId2 = (int)$grListId["grListId"];
+$grListId2 = (int)$grListId[0]["grListId"];
 $qty = 2;
 $grListItems = $grDbAccess->addItemToList($grListId2, $itemId, $qty);
 
@@ -134,7 +134,7 @@ $grListItems = $grDbAccess->addItemToList($grListId2, $itemId, $qty);
 echo "<br>";
 		
 $grListItems = NULL;
-$grListItems = $grDbAccess->getGrListItems($grListId['grListId']);
+$grListItems = $grDbAccess->getGrListItems($grListId[0]['grListId']);
 
   	if (!empty($grListItems) && !empty($grListId)) {
 		  echo "getGrListItems method is working and is Green</br>";
