@@ -180,7 +180,6 @@ class grDbAccess implements grDbInterface {
             $stmt->bindValue( "grListId", $grListId, PDO::PARAM_INT );
             $stmt->bindValue( "itemId", $itemId, PDO::PARAM_INT );
             $stmt->execute();
-            $result = $this->con->lastInsertId();
             return TRUE;
           } catch( PDOException $e ) {
 	          echo "Error in the removeItemFromListItem method, at line " . __LINE__. " in file " . __FILE__ . "</br>";

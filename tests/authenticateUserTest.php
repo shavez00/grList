@@ -7,8 +7,8 @@ $user = array();
 if (isset($_REQUEST['email'])) $user['email'] = validator::testInput($_REQUEST['email']);
 if (isset($_REQUEST['password'])) $user['password']= validator::testInput($_REQUEST['password']);
 
-$user['email'] = "shavez00@yahoo.com";
-$user['password'] = "morgan08";
+$user['email'] = "morgan";
+$user['password'] = "morgan";
 
 $user = new users($user);
 $userLogin = $user->userLogin();

@@ -62,6 +62,7 @@ class Users
     
     public function register() 
 	  {
+		    $success = FALSE;
         $this->userLogin();
         if($this->valid) {
             return 2;
@@ -74,8 +75,9 @@ class Users
             $stmt->bindValue( "password", password_hash($this->password, PASSWORD_DEFAULT), PDO::PARAM_STR );
             $stmt->bindValue( "email", $this->email, PDO::PARAM_STR );
             $stmt->execute();
-            $this->sessionEstablish();
-            return 1;
+            $success = $this->userLogin();
+            //$this->sessionEstablish();
+            return $success;
         } catch( PDOException $e ) {
 	          echo "Error in the Users object register method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
             echo $e->getMessage() . "</br>";

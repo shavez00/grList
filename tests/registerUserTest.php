@@ -4,7 +4,7 @@ require_once('core.php');
 
 $user = array();
 
-$user['email'] = "shavez00@yahoo.com";
+$user['email'] = "shavez00@";
 $user['password'] = "morgan08";
 
 $user = new users($user);
@@ -24,5 +24,3 @@ if ($result==1) {
 	} else {
 		echo "User Register Red</br>";
 	}
-	
-//$userExists = $user->register();
