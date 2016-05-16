@@ -4,6 +4,8 @@ include_once('core.php');
 
 if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
+echo "<a href=session.php>Log out</a></br></br>";
+
 $userId = (int)validator::testInput($_SESSION['login_user']['userId']);
 
 $grDbAccess = new grDbAccess();
@@ -18,7 +20,7 @@ if(empty($_REQUEST)) {
 	       $name = $grList['grName'];
 	       $listId = $grList['grListId'];
 	       $url = "grocerylist.php?grName=$name&grListId=$listId";
-		      echo "</br><a href=$url>$name</a></br>";
+		      echo "</br><a href=$url>$name</a> <a href=shareList.php?grListId=$listId>share list</a></br>";
         } 
       }  else {
 	      echo <<<EOT

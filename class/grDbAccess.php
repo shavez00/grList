@@ -209,6 +209,26 @@ class grDbAccess implements grDbInterface {
         }
 	  return $item;
   }
+
+  public function getUserId($email) 	{
+	  if ($email == NULL) throw new Exception("email needs to be set! for getUserId method");
+    try {
+            //this would be our query.
+            $sql = "SELECT * FROM users WHERE email = :email";
+            //if (isset($itemArray["measure"])) if ($itemArray["measure"] != NULL) $sql = $sql . " AND measure = :measure";
+            //prepare the statements
+            $stmt = $this->con->prepare( $sql );
+            //give value to named parameter :username
+            $stmt->bindValue( "email", $email, PDO::PARAM_STR );
+            $stmt->execute();
+            $item = $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+          echo "Error with getGrListId method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+          echo $e->getMessage() . "</br>";
+          exit;
+        }
+	  var_dump($email);
+  }
 }
 
 ?>

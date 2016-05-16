@@ -4,7 +4,7 @@ include_once("core.php");
 
 if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
-if (empty($_REQUEST['item'])) header("Location:grocerylist.php");
+if (empty($_REQUEST['item']) && empty($_REQUEST["itemName"])) header("Location:grocerylist.php");
 
 
 $userId = (int)validator::testInput($_SESSION['login_user']['userId']);
@@ -23,19 +23,17 @@ if (isset($items) && is_array($items)) {
   foreach ($items as $item) {
 	       $name = $item['item'];
 	       $itemId = $item['itemId'];
-	       $url = "addItem.php?itemName=$name&itemId=$itemId&qty=$qty";
+	       $url = "addItem.php?itemName=" . urlencode($name) . "&itemId=$itemId&qty=" . urlencode($qty);
 		      echo "</br><a href=$url>$name</a></br>";
         }
-} else {
-	$grDbAccess->addItemToList($grListId, $itemId, $qty);
-  header("Location:grocerylist.php?additem=true");
+} elseif(isset($items)) {
+	$grDbAccess->addItemToList($grListId, $items, $qty);
+	 header("Location:grocerylist.php?additem=true");
 }
 
 
 if (!empty($_REQUEST["itemName"])) {
-	
-	$result = $grDbAccess->addItemToList($_SESSION["grListId"],$_REQUEST["itemId"]);
-
+	$result = $grDbAccess->addItemToList($_SESSION["grListId"],$_REQUEST["itemId"], $qty);
 	header("Location:grocerylist.php");
 }
 ?>

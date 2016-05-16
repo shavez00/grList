@@ -8,6 +8,7 @@ interface grDbInterface {
   public function setItem(array $item);
   public function addItemToList($grListId, $itemId, $qty=NULL);
   public function removeItemFromList($grListId, $itemId);
+  public function getUserId($email);
 }
 
 ?>
