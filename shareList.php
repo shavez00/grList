@@ -37,6 +37,9 @@ if (isset($_REQUEST["email"])) {
 
   $grDbAccess = new grDbAccess();
   $userId = $grDbAccess->getUserId($email);
+  if (empty($userId)) {
+	  echo "<b>That email address could not be found</b>";
+	}
   $result = $grDbAccess->shareGrList($grListId, $userId);
 }
 

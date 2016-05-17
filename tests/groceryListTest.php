@@ -166,10 +166,44 @@ $item = $grDbAccess->getItem($itemId);
   	} else {
 		  echo "GETITEM METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		}
+		
+$email = "shavez00@yahoo.com";
+$userId = $grDbAccess->getUserId($email);
+
+  	if (!empty($email) && !empty($userId)) {
+		  echo "getUserId method is working and is Green</br>";
+		  echo"getUserId value:</br><pre>";
+		   print_r($userId);
+		   echo" </pre></br>";
+	  } elseif (empty($userId)) {
+		  echo "GETUSERID METHOD IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  echo "<pre>";
+		  echo var_dump($userId) . " = returned UserId</br>";
+		  echo "</pre>";
+  	} else {
+		  echo "GETUSERID METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		} 
+		
+$tesult = NULL;
+$result = $grDbAccess->shareGrList($grListId, $userId);
+
+  	if (!empty($grLidtId) && !empty($userId) && !empty($result)) {
+		  echo "shareGrList method is working and is Green</br>";
+		  echo"shareGrList result:</br><pre>";
+		   print_r($result);
+		   echo" </pre></br>";
+	  } elseif (empty($result)) {
+		  echo "SHAREGRLIST METHOD IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  echo "<pre>";
+		  echo var_dump($result) . " = returned UserId</br>";
+		  echo "</pre>";
+  	} else {
+		  echo "SHAREGRLIST METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		} 
+
 } catch (Exception $e) {
 	echo $e->getMessage();
 }
-
 
 
 

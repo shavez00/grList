@@ -211,6 +211,7 @@ class grDbAccess implements grDbInterface {
   }
 
   public function getUserId($email) 	{
+	  $item = NULL;
 	  if ($email == NULL) throw new Exception("email needs to be set! for getUserId method");
     try {
             //this would be our query.
@@ -227,7 +228,7 @@ class grDbAccess implements grDbInterface {
           echo $e->getMessage() . "</br>";
           exit;
         }
-	  var_dump($email);
+      return (int)$item["userId"];
   }
 }
 
