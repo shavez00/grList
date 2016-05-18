@@ -184,13 +184,14 @@ $userId = $grDbAccess->getUserId($email);
 		  echo "GETUSERID METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		} 
 		
-$tesult = NULL;
-$result = $grDbAccess->shareGrList($grListId, $userId);
+$tesult = FALSE;
+$sharedWithId = 12;
+$result = $grDbAccess->shareGrList($grListId2, $userId, $sharedWithId);
 
-  	if (!empty($grLidtId) && !empty($userId) && !empty($result)) {
+  	if (!empty($grListId2) && !empty($userId) && $result == TRUE) {
 		  echo "shareGrList method is working and is Green</br>";
 		  echo"shareGrList result:</br><pre>";
-		   print_r($result);
+		  var_dump($result);
 		   echo" </pre></br>";
 	  } elseif (empty($result)) {
 		  echo "SHAREGRLIST METHOD IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";

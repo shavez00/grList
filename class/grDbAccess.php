@@ -230,6 +230,29 @@ class grDbAccess implements grDbInterface {
         }
       return (int)$item["userId"];
   }
+  public function shareGrList($grListId, $userId, $sharedWithId) {
+	  $grListCheck = $this->getGrListId($userId);
+	  if (!empty($grListCheck)) foreach ($grListCheck as $grList) {
+		  if ($grList["grListId"] == $grListId) {
+			  try {
+		        $sql = "INSERT INTO groceryList(sharedWith) VALUES(:sharedWithId) WHERE grListId = :grListId";
+            
+            $stmt = $this->con->prepare( $sql );
+            $stmt->bindValue( "sharedWithId", $sharedWithId, PDO::PARAM_INT );
+            $stmt->bindValue( "grListId", $grListId, PDO::PARAM_INT );
+            $stmt->execute();
+            $result = $this->con->lastInsertId();
+            var_dump($result);
+            if ($result == TRUE) return TRUE;
+          } catch( PDOException $e ) {
+	          echo "Error in the setItem method, at line " . __LINE__. " in file " . __FILE__ . "</br>";
+            echo $e->getMessage() . "</br>";
+            exit;
+          }
+		  }
+	  }
+	  return FALSE;
+  }
 }
 
 ?>
