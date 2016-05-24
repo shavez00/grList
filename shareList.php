@@ -6,7 +6,7 @@ if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
 $grListId = (int)validator::testInput($_REQUEST['grListId']);
 
-echo <<<EOT
+if (!isset($_REQUEST['email']))echo <<<EOT
 <!DOCTYPE HTML>
 <html>
 	<head>
@@ -33,17 +33,15 @@ EOT;
 
 if (isset($_REQUEST["email"])) {
 	$email = validator::testInput($_REQUEST['email']);
-
+	$userId = validator::testInput($_SESSION['login_user']['userId']);
 
   $grDbAccess = new grDbAccess();
-  $userId = $grDbAccess->getUserId($email);
-  if (empty($userId)) {
+  $sharedWithId = $grDbAccess->getUserId($email);
+  if (empty($sharedWithId)) {
 	  echo "<b>That email address could not be found</b>";
+	} else {
+		$result = $grDbAccess->shareGrList($grListId, $userId, $sharedWithId);
 	}
-  $result = $grDbAccess->shareGrList($grListId, $userId);
 }
-
-
-var_dump($_REQUEST);
 
 ?>
