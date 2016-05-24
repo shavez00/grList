@@ -190,9 +190,8 @@ $result = $grDbAccess->shareGrList($grListId2, $userId, $sharedWithId);
 
   	if (!empty($grListId2) && !empty($userId) && $result == TRUE) {
 		  echo "shareGrList method is working and is Green</br>";
-		  echo"shareGrList result:</br><pre>";
+		  echo"shareGrList result:";
 		  var_dump($result);
-		   echo" </pre></br>";
 	  } elseif (empty($result)) {
 		  echo "SHAREGRLIST METHOD IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		  echo "<pre>";
