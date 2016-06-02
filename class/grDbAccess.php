@@ -233,7 +233,7 @@ class grDbAccess implements grDbInterface {
   public function shareGrList($grListId, $userId, $sharedWithId) {
 	  $grListCheck = $this->getGrListId($userId);
 	  if (!empty($grListCheck)) foreach ($grListCheck as $grList) {
-		  if ($grList["grListId"] == $grListId) {
+		if ($grList["grListId"] == $grListId) {
 			  try {
 		        $sql = "UPDATE groceryList SET sharedWithId = :sharedWithId WHERE grListId = :grListId";
             

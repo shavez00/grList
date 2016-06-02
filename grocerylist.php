@@ -1,10 +1,14 @@
 <?php
 
 include_once('core.php');
+include('header.php');
 
 if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
-echo "<a href=session.php>Log out</a></br></br>";
+echo '<div class="container">
+            <div style="float: left"><h6><a href=session.php>Log out</a></h6></div>
+            <div style="float: right"><h6><a href=grocerylist.php>Select different list</a></h6></div>
+          </div>';
 
 $userId = (int)validator::testInput($_SESSION['login_user']['userId']);
 
@@ -15,28 +19,19 @@ if(empty($_REQUEST)) {
   if (isset($_SESSION)) {
   	if(isset($_SESSION['login_user'])) { 
 	  	if(!empty($grListId)) {
-		  	echo "Which Grocery List would you like to use?";
+		  	echo '<div class="container"><div class="row"><div class="one-half column" style="margin-top: 0%"><h4>Which Grocery List would you like to use?</h4>';
+			  echo '<table>';
         foreach ($grListId as $grList) {
 	       $name = $grList['grName'];
 	       $listId = $grList['grListId'];
 	       $url = "grocerylist.php?grName=$name&grListId=$listId";
-		      echo "</br><a href=$url>$name</a> <a href=shareList.php?grListId=$listId>share list</a></br>";
+		      echo "<tr><p><td><a href=$url>$name</a></td>";
+		      echo "<td><a href=shareList.php?grListId=$listId>share list</a></td></p></tr>";
         } 
+        echo '</table></div></div></div>';
       }  else {
 	      echo <<<EOT
-<!DOCTYPE HTML>
-<html>
-	<head>
-	  <title>Grocery List</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	  <meta name="description" content="The HTML5 Herald"> 
-		<meta name="author" content="SitePoint"> 
-		<link rel="stylesheet" href="css/styles.css?v=1.0"> 
-		<!--[if lt IE 9]> 
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> 
-		<![endif]--> 
-  </head> 
-<body> 
+
   <script src="js/scripts.js"></script> 
   <form action="createList.php" method="post">
     Create grocery list: </br>
@@ -58,55 +53,40 @@ $grListId = NULL;
 if (isset($_REQUEST['grListId'])) {
   $grListId = (int)validator::testInput($_REQUEST['grListId']);
   $_SESSION["grListId"] = $grListId;
+  $grName = validator::testInput($_REQUEST['grName']);
+  $_SESSION["grName"] = $grName;
 } else {
   $grListId = (int)validator::testInput($_SESSION['grListId']);
-}
-
-/*
-echo "<pre>";
-var_dump($items);
-echo "</pre>";
-exit;
-*/
-//var_dump($_REQUEST);
-if (empty($_REQUEST["item"])) {
-echo <<<EOT
-<!DOCTYPE HTML>
-<html>
-	<head>
-	  <title>Grocery List</title>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	  <meta name="description" content="The HTML5 Herald"> 
-		<meta name="author" content="SitePoint"> 
-		<link rel="stylesheet" href="css/styles.css?v=1.0"> 
-		<!--[if lt IE 9]> 
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script> 
-		<![endif]--> 
-  </head> 
-<body> 
-  <script src="js/scripts.js"></script> 
-  <form action="addItem.php" method="post">
-    Add item to list: </br>
-    item name: <input type="text" name="item"></input></br>
-    quantity of items: <input type="number" name="qty"></input></br>
-    measure: <input type="text" name="measure"></input></br>
-    <br></br>
-    <input type="submit" value="Add"></input>
-  </form>
-</body>
-</html>
-
-EOT;
+  $grName = validator::testInput($_SESSION['grName']);
 }
 
 $items = $grDbAccess->getGrListItems($grListId);
 $count = 0;
 
-echo "</br>Items on grocery list</br>";
+
+echo '<div class="container"><div class="row"><div class="one-half column" style="margin-top: 0%"><h2>Items on grocery list - ' . $grName . '</h2></br><table>';
 
 foreach ($items as $item) {
 	$count = $count + 1;
   $itemDesc = $grDbAccess->getItem($item["itemId"]);
-  echo $count . ". " . $itemDesc["item"] . " " . $item["qty"] . " " . $itemDesc["measure"] . "<a href=removeItem.php?itemId=" . $itemDesc["itemId"] . "> remove</a>";
-  echo "</br>";
+  echo '<tr><td><h6>' . $itemDesc["item"] . '</h6></td><td><h6> ' . $item["qty"] . ' ' . $itemDesc["measure"] . '</h6></td><td> <h6><a href=removeItem.php?itemId=' . $itemDesc["itemId"] . '> remove</a></h6></td>';
+}
+
+echo '</table></div></div></div>';
+
+if (empty($_REQUEST["item"])) {
+echo <<<EOT
+  
+  <div class="container"><div class="row"><div class="one-half column" style="margin-top: 0%">
+  <form action="addItem.php" method="post">
+    <h2>Add item to list: </h2></br>
+    <h5>item name: <input type="text" name="item"></input></br>
+    quantity of items: <input type="number" name="qty"></input></br>
+    measure: <input type="text" name="measure"></input></br>
+    <br></br></h5>
+    <input type="submit" value="Add"></input>
+  </form>
+  </div></div></div>
+
+EOT;
 }

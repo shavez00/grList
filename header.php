@@ -32,22 +32,4 @@
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
-<body> 
-  <form action="authenticateUser.php" method="post">
-  <div class="container">
-    <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
-        <h1>Please log in</h1>
-        <br></br>
-        <p>Email: <input type="text" name="email"></input></p>
-        <br></br>
-        <p>Password: <input type="password" name="password"></input></p>
-        <!--need to add password verification -->
-        <br></br>
-        <input type="submit" value="Submit"></input>
-       </div>
-    </div>
-  </div>
-</form>
-</body>
-</html>
+<body>

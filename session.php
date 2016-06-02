@@ -1,10 +1,8 @@
 <?php
 
-session_start(); 
+include_once("core.php");
 
 session_unset();
-setcookie('login_user', "", time() - 3600);
-unset($_COOKIE['login_user']);
 header("Location:index.php");
 
 ?>
