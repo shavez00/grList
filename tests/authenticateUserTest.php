@@ -7,8 +7,8 @@ $user = array();
 if (isset($_REQUEST['email'])) $user['email'] = validator::testInput($_REQUEST['email']);
 if (isset($_REQUEST['password'])) $user['password']= validator::testInput($_REQUEST['password']);
 
-$user['email'] = "morgan";
-$user['password'] = "morgan";
+$user['email'] = "shavez00@yahoo.com";
+$user['password'] = "morgan08";
 
 $user = new users($user);
 $userLogin = $user->userLogin();
@@ -24,6 +24,7 @@ if ($user instanceof users) {
   echo "</pre></br>";
 } else {
   echo "User object Red</br>";
+  exit;
 }
 
 if ($userLogin) {
@@ -32,4 +33,5 @@ if ($userLogin) {
 	} else {
 		echo "User Login Red</br>";
 		echo var_dump($userLogin) . " = user Login result</br>";
+		exit;
 	}

@@ -40,10 +40,11 @@ try {
 	
 	echo "User Id = $userId</br>";
 	
-	if ($userId!==Null) {
+	if ($userId!==0) {
 		echo "getUserId method is Green</br>";
 	} else {
 		echo "GETUSERID METHOD IS RED!!!!!!!!!!!!!!!! - line # " . __LINE__ . "</br>";
+		exit;
 	}
 	
 	$grDbAccess = new grDbAccess();
@@ -52,12 +53,14 @@ try {
 
 	if (isset($grListId)) {
 		echo "<br>setGrListId is set and is Green</br>";
-	  echo "grListId returned from setGrListId method = $grListId[grListId]</br>";
+	  echo 'grListId returned from setGrListId method = ' . $grListId["grListId"] . '</br>';
 	} elseif (empty($grListId)) {
 		echo "SETGRLISTID IS RED, IT IS NOT WORKING!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		exit;
 	} else {
 		echo "SETGRLISTID IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		echo var_dump($grListId) . " = grListId</br>";
+		exit;
 	}
 
 	$grListId = NULL;
@@ -70,9 +73,11 @@ try {
 		   echo" </pre></br>";
 	  } elseif (empty($grListId)) {
 		  echo "<br>GRLISTID IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		  echo var_dump($grListId) . " = grListId</br>";
   	} else {
 		  echo "<br>GRLISTID IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		}
 
 $itemArray = ["item"=>"juice", "measure"=>"size"];
@@ -88,8 +93,10 @@ $result = $grDbAccess->setItem($itemArray);
 	  } elseif (empty($result)) {
 		  echo "SETITEM IS RED, IT IS EMPTY!!!!!!!!!!!!!!!!!!!!!!!!</br>";
 		  echo var_dump($itemArray) . " = item</br>";
+		  exit;
   	} else {
 		  echo "SETITEM IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		}
 		
 $grListItems = NULL;
@@ -109,8 +116,10 @@ $grListItems = $grDbAccess->addItemToList($grListId2, $itemId, $qty);
 		  echo var_dump($grListId2) . " = grListId</br>";
 		  echo var_dump($itemId) . " = itemId</br>";
 		  echo var_dump($grListItems) . " = returned InterId</br>";
+		  exit;
   	} else {
 		  echo "ADDITEMTOLIST IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		}
 		
 		echo "</br>";
@@ -127,13 +136,16 @@ $grListItems = $grDbAccess->addItemToList($grListId2, $itemId, $qty);
 		  echo var_dump($grListId2) . " = grListId</br>";
 		  echo var_dump($itemId) . " = itemId</br>";
 		  echo var_dump($grListItems) . " = returned InterId</br>";
+		  exit;
   	} else {
 		  echo "REMOVEITEMFROMLIST IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		}
 		
 echo "<br>";
 		
 $grListItems = NULL;
+
 $grListItems = $grDbAccess->getGrListItems($grListId[0]['grListId']);
 
   	if (!empty($grListItems) && !empty($grListId)) {
@@ -146,8 +158,10 @@ $grListItems = $grDbAccess->getGrListItems($grListId[0]['grListId']);
 		  echo "<pre>";
 		  echo var_dump($grListId) . " = grListId</br>";
 		  echo "</pre>";
+		  exit;
   	} else {
 		  echo "GRLISTITEMS IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		}
 		
 $itemId = 2;
@@ -163,8 +177,10 @@ $item = $grDbAccess->getItem($itemId);
 		  echo "<pre>";
 		  echo var_dump($item) . " = item</br>";
 		  echo "</pre>";
+		  exit;
   	} else {
 		  echo "GETITEM METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		}
 		
 $email = "shavez00@yahoo.com";
@@ -180,8 +196,10 @@ $userId = $grDbAccess->getUserId($email);
 		  echo "<pre>";
 		  echo var_dump($userId) . " = returned UserId</br>";
 		  echo "</pre>";
+		  exit;
   	} else {
 		  echo "GETUSERID METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		} 
 		
 $tesult = FALSE;
@@ -197,8 +215,10 @@ $result = $grDbAccess->shareGrList($grListId2, $userId, $sharedWithId);
 		  echo "<pre>";
 		  echo var_dump($result) . " = returned UserId</br>";
 		  echo "</pre>";
+		  exit;
   	} else {
 		  echo "SHAREGRLIST METHOD IS RED!!!!!!!!!!!!!!!!!!!!!!!!</br>";
+		  exit;
 		} 
 
 } catch (Exception $e) {
