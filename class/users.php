@@ -50,7 +50,9 @@ class Users
 	              //valid is true so email exists and password is correct so success is set to true
                 $this->sessionEstablish();
                 $success = TRUE;
-              } 
+              } else {
+	              $success = 2;
+              }
             }
             return $success;
         } catch (PDOException $e) {

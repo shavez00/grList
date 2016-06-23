@@ -21,6 +21,8 @@ define ("PATH_SEPERATOR", "/");  //Need to define PATH_SEPERATOR to eliminate no
 try {
   if (session_status()==1) {
 	  session_start();
+  } elseif (session_status()==2) {
+	  //do nothing session is staye started
   } else {
 	  throw new Exception ("Session Start Error");
   }
