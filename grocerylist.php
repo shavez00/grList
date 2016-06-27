@@ -5,6 +5,9 @@ include('header.php');
 
 if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
+if (isset($_REQUEST['grName'])) $_SESSION["grName"] = validator::testInput($_REQUEST["grName"]);
+if (isset($_REQUEST['grList'])) $_SESSION["grList"] = validator::testInput($_REQUEST["grList"]);
+
 echo '<div class="container">
             <div style="float: left"><h6><a href=session.php>Log out</a></h6></div>
             <div style="float: right"><h6><a href=grocerylist.php>Select different list</a></h6></div>
@@ -28,20 +31,9 @@ if(empty($_REQUEST)) {
 		      echo "<tr><p><td><a href=$url>$name</a></td>";
 		      echo "<td><a href=shareList.php?grListId=$listId>share list</a></td></p></tr>";
         } 
-        echo '</table></div></div></div>';
+        echo '</table></div></div></div><a href="createList.php">Create new list</a>';
       }  else {
-	      echo <<<EOT
-
-  <script src="js/scripts.js"></script> 
-  <form action="createList.php" method="post">
-    Create grocery list: </br>
-    Grocery list name: <input type="text" name="grName"></input></br>
-    <br></br>
-    <input type="submit" value="Create"></input>
-  </form>
-</body>
-</html>
-EOT;
+	      echo '<a href="createList.php">Create new list</a>';
 	    }
     }
   }
@@ -52,9 +44,9 @@ $grListId = NULL;
 
 if (isset($_REQUEST['grListId'])) {
   $grListId = (int)validator::testInput($_REQUEST['grListId']);
-  $_SESSION["grListId"] = $grListId;
-  $grName = validator::testInput($_REQUEST['grName']);
-  $_SESSION["grName"] = $grName;
+  //$_SESSION["grListId"] = $grListId;
+  $grName = validator::testInput($_SESSION['grName']);
+  //$_SESSION["grName"] = $grName;
 } else {
   $grListId = (int)validator::testInput($_SESSION['grListId']);
   $grName = validator::testInput($_SESSION['grName']);
@@ -62,7 +54,6 @@ if (isset($_REQUEST['grListId'])) {
 
 $items = $grDbAccess->getGrListItems($grListId);
 $count = 0;
-
 
 echo '<div class="container"><div class="row"><div class="one-half column" style="margin-top: 0%"><h2>Items on grocery list - ' . $grName . '</h2></br><table>';
 
