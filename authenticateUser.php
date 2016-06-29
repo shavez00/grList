@@ -61,5 +61,11 @@ if ($loginSuccess == 0) {
 
 echo "ERROR IN " . __FILE__ . " AT " . __LINE__;
 } else {
-  header('Location:login.php?error=4&email=' . $user["email"]);
+	if (isset($_REQUEST["passwordConfirm"])) {
+		//error code 6 so login page will generate password confirm box
+		header('Location:login.php?error=6&email=' . $user["email"]); 
+	} else {
+		//error code 4 that no password was entered
+		 header('Location:login.php?error=4&email=' . $user["email"]);
+	}
 }

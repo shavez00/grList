@@ -31,3 +31,7 @@
 
   <!-- Primary Page Layout
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+<div class="container">
+  <div style="float: left"><h6><a href=session.php>Log out</a></h6></div>
+  <div style="float: right"><h6><a href=grocerylist.php>Select different list</a></h6></div>
+</div>

@@ -5,19 +5,24 @@ include('header.php');
 
 if (!isset($_SESSION['login_user'])) header("Location:index.php");
 
+//as page is loaded, if grName and grList is set then load those into Session varible
 if (isset($_REQUEST['grName'])) $_SESSION["grName"] = validator::testInput($_REQUEST["grName"]);
 if (isset($_REQUEST['grList'])) $_SESSION["grList"] = validator::testInput($_REQUEST["grList"]);
 
+/*header to let user log out and switch lists
 echo '<div class="container">
             <div style="float: left"><h6><a href=session.php>Log out</a></h6></div>
             <div style="float: right"><h6><a href=grocerylist.php>Select different list</a></h6></div>
-          </div>';
+          </div>';*/
 
 $userId = (int)validator::testInput($_SESSION['login_user']['userId']);
 
 $grDbAccess = new grDbAccess();
 $grListId = $grDbAccess->getGrListId($userId);
 
+
+//foreach loop to generate list of available grocery lists as hyperlinks
+//only executed is $_REQUEST is empty and $_SESSION is set
 if(empty($_REQUEST)) {
   if (isset($_SESSION)) {
   	if(isset($_SESSION['login_user'])) { 

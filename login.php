@@ -18,7 +18,7 @@ if (isset($error)) {
   if ($error == 0) echo "User does not exist, please enter in password for new account";
 
   //password is empty
-  if ($error == 4) echo "Please enter a password";
+  if ($error == 4||$error == 6) echo "Please enter a password";
 
   //new password and password confirm don't match
   if ($error == 3) echo "Passwords entered don't match, please re-enter";
@@ -38,7 +38,8 @@ if (isset($error)) {
           </br>
           <h4>Password: <input type="password" name="password"></input></h4>
 <?php
-  if (isset($error)) if ($error==0 || $error==3) echo <<<EOT
+  //generate password confirm box if it's a new user, password and password confirm don't match, or password field was empty
+  if (isset($error)) if ($error==0 || $error==3 || $error == 6) echo <<<EOT
   </br>
           <h4>Password confirm: <input type="password" name="passwordConfirm"></input></h4>
 EOT;
